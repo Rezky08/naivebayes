@@ -47,6 +47,21 @@ vectorizer = TfidfVectorizer(stop_words=stopwords)
 features_train  = vectorizer.fit_transform(features_train)
 features_test = vectorizer.transform(features_test)
 
+print("=================================================")
+print("\t\t\tDATASET")
+print("=================================================")
+print("Training : {}".format(len(labels_train)))
+training_class,training_class_count = np.unique(labels_train,return_counts=True)
+for index,item in enumerate(training_class):
+    print("{}: {}".format(item,training_class_count[index]))
+print("=================================================")
+print("Test : {}".format(len(labels_test)))
+test_class,test_class_count = np.unique(labels_test,return_counts=True)
+for index,item in enumerate(training_class):
+    print("{}: {}".format(item,test_class_count[index]))
+print("=================================================\n")
+
+
 t0 = time()
 model = GaussianNB()
 model.fit(features_train.todense(), labels_train)
@@ -57,6 +72,10 @@ print(f"Prediction time (train): {round(time()-t0, 3)}s")
 t0 = time()
 score_test = model.score(features_test.todense(), labels_test)
 print(f"Prediction time (test): {round(time()-t0, 3)}s")
+print("=================================================")
+print(f"Prediction Score (train): {score_train}")
+print(f"Prediction Score (test): {score_test}")
+
 
 resource_feature = vectorizer.transform(tweets)
 predicts = np.zeros(resource_feature.shape[0])
